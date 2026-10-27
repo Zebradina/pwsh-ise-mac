@@ -22,6 +22,27 @@ npm start
 npm run dist
 ```
 
+## Opening the app on macOS (unsigned build)
+
+The `.dmg` is ad-hoc signed, not signed with an Apple Developer ID and not
+notarized. When you download it, macOS blocks the first launch with a message
+saying the app cannot be opened or is from an unidentified developer. To open it:
+
+1. Open the `.dmg` and drag **PowerShell ISE** to Applications.
+2. Open **Applications**, then **right-click** (or Control-click) **PowerShell ISE** and choose **Open**. Click **Open** in the dialog.
+
+If macOS still blocks it, open **System Settings → Privacy & Security**, scroll
+to the message about PowerShell ISE, click **Open Anyway**, and confirm.
+
+Alternatively, remove the download quarantine flag in Terminal once:
+
+```sh
+xattr -dr com.apple.quarantine "/Applications/PowerShell ISE.app"
+```
+
+Only do this for builds you trust. The app is not notarized, so Gatekeeper
+cannot check it.
+
 ## Keys
 
 | Action | Shortcut |
