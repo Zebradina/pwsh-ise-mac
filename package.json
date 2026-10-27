@@ -14,9 +14,10 @@
     "appId": "com.example.pwsh-ise-mac",
     "mac": {
       "category": "public.app-category.developer-tools",
-      "target": "dmg"
+      "target": "dmg",
+      "icon": "assets/icon.icns"
     },
-    "files": ["main.js", "preload.js", "index.html", "renderer.js", "styles.css"]
+    "files": ["main.js", "preload.js", "index.html", "renderer.js", "styles.css", "assets/icon.png"]
   },
   "devDependencies": {
     "electron": "^38.0.0",
