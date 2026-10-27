@@ -15,6 +15,7 @@
     "mac": {
       "category": "public.app-category.developer-tools",
       "target": "dmg",
+      "identity": "-",
       "icon": "assets/icon.icns"
     },
     "files": ["main.js", "preload.js", "index.html", "renderer.js", "styles.css", "assets/icon.png"]
