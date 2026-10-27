@@ -47,17 +47,25 @@ function send(channel, payload) {
 
 // Runs a script file (or a single command) in a fresh pwsh 7 process and
 // streams its output to the console pane.
-function runPowerShell(args, label) {
+function runPowerShell(args, label, onFinish = () => {}) {
+  let finished = false;
+  const finish = () => {
+    if (finished) return;
+    finished = true;
+    onFinish();
+  };
   const exe = findPwsh();
   if (!exe) {
     send('console:append', {
       kind: 'error',
       text: 'PowerShell 7 (pwsh) was not found. Install it from https://aka.ms/powershell or run: brew install --cask powershell\n',
     });
+    finish();
     return;
   }
   if (currentRun) {
     send('console:append', { kind: 'error', text: 'A script is already running. Stop it first.\n' });
+    finish();
     return;
   }
 
@@ -75,12 +83,14 @@ function runPowerShell(args, label) {
   child.stderr.on('data', (d) => send('console:append', { kind: 'error', text: d.toString() }));
   child.on('error', (err) => {
     send('console:append', { kind: 'error', text: `Failed to start pwsh: ${err.message}\n` });
+    finish();
   });
   child.on('close', (code, signal) => {
     currentRun = null;
     send('run:state', { running: false });
     const status = signal ? `stopped (${signal})` : `exit code ${code}`;
     send('console:append', { kind: 'info', text: `\n[${status}]\n\n` });
+    finish();
   });
 }
 
@@ -102,7 +112,9 @@ ipcMain.handle('script:run', (_e, { text, selection }) => {
     send('console:append', { kind: 'error', text: `Could not write the temporary script (${file || os.tmpdir()}): ${err.message}\n` });
     return;
   }
-  runPowerShell(['-ExecutionPolicy', 'Bypass', '-File', file], selection && selection.trim() ? '(selection)' : '(script)');
+  // Remove the temp script once pwsh has finished with it.
+  const removeTempScript = () => fs.rm(file, { force: true }, () => {});
+  runPowerShell(['-ExecutionPolicy', 'Bypass', '-File', file], selection && selection.trim() ? '(selection)' : '(script)', removeTempScript);
 });
 
 ipcMain.handle('command:run', (_e, { command }) => {
