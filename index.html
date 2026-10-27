@@ -1,0 +1,61 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; style-src 'self'; script-src 'self'" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>PowerShell ISE</title>
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <div class="toolbar">
+      <button id="btn-new" title="New script (Cmd+N)">New</button>
+      <button id="btn-open" title="Open (Cmd+O)">Open</button>
+      <button id="btn-save" title="Save (Cmd+S)">Save</button>
+      <span class="sep"></span>
+      <button id="btn-run" class="primary" title="Run Script (F5)">&#9654; Run Script</button>
+      <button id="btn-selection" title="Run Selection (F8)">Run Selection</button>
+      <button id="btn-stop" title="Stop Execution (Shift+F5)" disabled>&#9632; Stop</button>
+      <span class="spacer"></span>
+      <span id="pwsh-status" class="status">Checking PowerShell 7...</span>
+    </div>
+
+    <div class="workspace">
+      <div class="left">
+        <div class="pane script-pane">
+          <div class="pane-title">
+            <span id="file-name">Untitled1.ps1</span><span id="dirty" class="dirty" hidden>*</span>
+          </div>
+          <textarea id="editor" spellcheck="false" autocapitalize="off" autocomplete="off" autocorrect="off" wrap="off" placeholder="# Write your PowerShell script here"></textarea>
+        </div>
+        <div class="pane console-pane">
+          <div class="pane-title">
+            <span>Console</span>
+            <button id="btn-clear" class="small" title="Clear output">Clear</button>
+          </div>
+          <div id="console" class="console" aria-live="polite"></div>
+          <form id="command-form" class="command-line">
+            <span class="prompt">PS&gt;</span>
+            <input id="command" type="text" spellcheck="false" autocomplete="off" autocapitalize="off" placeholder="Type a command and press Enter" />
+          </form>
+        </div>
+      </div>
+      <aside class="addon">
+        <div class="pane-title">Commands</div>
+        <div class="filter-row">
+          <input id="cmd-filter" type="search" spellcheck="false" autocomplete="off" placeholder="Filter commands…" />
+          <span id="cmd-count" class="cmd-count"></span>
+        </div>
+        <div id="cmd-status" class="cmd-status" hidden></div>
+        <ul id="snippets" class="snippets"></ul>
+      </aside>
+    </div>
+
+    <div class="statusbar">
+      <span id="cursor-pos">Ln 1, Col 1</span>
+      <span id="run-state">Ready</span>
+    </div>
+
+    <script src="renderer.js"></script>
+  </body>
+</html>

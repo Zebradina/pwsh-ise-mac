@@ -1,0 +1,25 @@
+{
+  "name": "pwsh-ise-mac",
+  "productName": "PowerShell ISE",
+  "version": "0.1.0",
+  "description": "A macOS replica of the PowerShell Integrated Scripting Environment that runs scripts on PowerShell 7 (pwsh)",
+  "private": true,
+  "main": "main.js",
+  "scripts": {
+    "start": "electron .",
+    "check": "node --check main.js && node --check preload.js && node --check renderer.js",
+    "dist": "electron-builder --mac"
+  },
+  "build": {
+    "appId": "com.example.pwsh-ise-mac",
+    "mac": {
+      "category": "public.app-category.developer-tools",
+      "target": "dmg"
+    },
+    "files": ["main.js", "preload.js", "index.html", "renderer.js", "styles.css"]
+  },
+  "devDependencies": {
+    "electron": "^38.0.0",
+    "electron-builder": "^26.0.0"
+  }
+}
